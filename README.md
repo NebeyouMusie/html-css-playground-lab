@@ -1,4 +1,4 @@
-# Welcome to your GPT Engineer project
+# HTML/CSS Playground
 
 ## Project info
 
