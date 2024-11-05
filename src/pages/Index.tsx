@@ -1,6 +1,7 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Index = () => {
   const [htmlCode, setHtmlCode] = useState('');
@@ -9,14 +10,29 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="p-4 border-b">
-        <h1 className="text-4xl font-bold text-center font-poppins">HTML/CSS Playground</h1>
-        <p className="text-center text-muted-foreground mt-2">Experiment with HTML and CSS in real-time!</p>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center font-poppins">HTML/CSS Playground</h1>
+            <p className="text-center sm:text-left text-muted-foreground mt-2">Experiment with HTML and CSS in real-time!</p>
+          </div>
+          <ThemeToggle />
+        </div>
       </header>
 
-      <main className="flex-1 p-4">
-        <ResizablePanelGroup direction="horizontal" className="min-h-[500px] rounded-lg border">
-          <ResizablePanel defaultSize={33}>
-            <div className="h-full p-4">
+      <main className="flex-1 p-4 max-w-7xl mx-auto w-full">
+        <ResizablePanelGroup 
+          direction="horizontal" 
+          className="min-h-[500px] rounded-lg border"
+          onLayout={(sizes: number[]) => {
+            document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
+          }}
+        >
+          <ResizablePanel 
+            defaultSize={33} 
+            className="flex flex-col"
+            minSize={30}
+          >
+            <div className="h-full p-2 sm:p-4">
               <h2 className="font-semibold mb-2">HTML</h2>
               <textarea
                 value={htmlCode}
@@ -27,10 +43,14 @@ const Index = () => {
             </div>
           </ResizablePanel>
           
-          <ResizableHandle />
+          <ResizableHandle withHandle />
           
-          <ResizablePanel defaultSize={33}>
-            <div className="h-full p-4">
+          <ResizablePanel 
+            defaultSize={33} 
+            className="flex flex-col"
+            minSize={30}
+          >
+            <div className="h-full p-2 sm:p-4">
               <h2 className="font-semibold mb-2">CSS</h2>
               <textarea
                 value={cssCode}
@@ -41,12 +61,16 @@ const Index = () => {
             </div>
           </ResizablePanel>
           
-          <ResizableHandle />
+          <ResizableHandle withHandle />
           
-          <ResizablePanel defaultSize={33}>
-            <div className="h-full p-4">
+          <ResizablePanel 
+            defaultSize={33} 
+            className="flex flex-col"
+            minSize={30}
+          >
+            <div className="h-full p-2 sm:p-4">
               <h2 className="font-semibold mb-2">Preview</h2>
-              <div className="w-full h-[calc(100%-2rem)] bg-white rounded-md border p-4">
+              <div className="w-full h-[calc(100%-2rem)] bg-white dark:bg-zinc-900 rounded-md border p-2 sm:p-4">
                 <iframe
                   srcDoc={`
                     <html>
