@@ -2,10 +2,35 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const Index = () => {
   const [htmlCode, setHtmlCode] = useState('');
   const [cssCode, setCssCode] = useState('');
+
+  const handleDownload = async () => {
+    const zip = new JSZip();
+    
+    // Add HTML file
+    zip.file("index.html", `
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+${htmlCode}
+</body>
+</html>`);
+    
+    // Add CSS file
+    zip.file("style.css", cssCode);
+    
+    // Generate and download zip
+    const content = await zip.generateAsync({ type: "blob" });
+    saveAs(content, "code.zip");
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -97,6 +122,12 @@ const Index = () => {
             }}
           >
             Clear All
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleDownload}
+          >
+            Download Code as .zip
           </Button>
         </div>
       </main>
